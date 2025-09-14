@@ -63,6 +63,15 @@ public class SettingsActivity extends AppCompatActivity {
             Toast.makeText(this, "Semua pengaturan di-reset ke default.", Toast.LENGTH_SHORT).show();
         });
 
+        binding.btnClearCache.setOnClickListener(v -> {
+    new AlertDialog.Builder(this)
+        .setTitle("Konfirmasi")
+        .setMessage("Hapus semua cache & cookies?")
+        .setPositiveButton("Hapus", (d, w) -> clearAllCache())
+        .setNegativeButton("Batal", null)
+        .show();
+});
+
         // === FITUR CEK TOKEN (2 URL, auto http/https) ===
         binding.btnCekToken.setOnClickListener(v -> {
             binding.tvHasilToken.setText("Mengambil token...");
