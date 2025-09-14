@@ -156,6 +156,23 @@ public class SettingsActivity extends AppCompatActivity {
         void onFailed();
     }
 
+private void clearAllCache() {
+    // 1. WebView cache & cookies
+    android.webkit.CookieManager.getInstance().removeAllCookies(null);
+    android.webkit.CookieManager.getInstance().flush();
+    deleteDir(getCacheDir());          // 2. App cache
+    deleteDir(getFilesDir());          // 3. Internal files (opsional)
+    Toast.makeText(this, "Cache & cookies terhapus", Toast.LENGTH_SHORT).show();
+}
+
+private boolean deleteDir(java.io.File dir) {
+    if (dir == null) return true;
+    if (dir.isDirectory())
+        for (java.io.File child : dir.listFiles())
+            deleteDir(child);
+    return dir.delete();
+}
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
