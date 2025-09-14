@@ -1,30 +1,34 @@
-# --- Base ---
+# --- SUPER AGRESIF ---
+-dontusemixedcaseclassnames
+-dontskipnonpubliclibraryclasses
+-dontskipnonpubliclibraryclassmembers
+-dontpreverify
+-verbose
+
+# Hanya keep entry-point (Application & Activities)
+-keep public class com.exam.exammodwithx.ExamApplication { *; }
+-keep public class com.exam.exammodwithx.MainActivity { *; }
+-keep public class com.exam.exammodwithx.WebviewActivity { *; }
+-keep public class com.exam.exammodwithx.SettingsActivity { *; }
+
+# WebView & JS interface
+-keepclassmembers class com.exam.exammodwithx.WebviewActivity$JSBridge { public *; }
+-keepclassmembers class * extends android.webkit.WebViewClient { public *; }
+-keepclassmembers class * extends android.webkit.WebView { *; }
+
+# Native
+-keep class com.exam.exammodwithx.SecureNative { native <methods>; }
+
+# Hapus semua logging
+-assumenosideeffects class android.util.Log {
+    public static int v(...);
+    public static int d(...);
+    public static int i(...);
+    public static int w(...);
+    public static int e(...);
+}
+
+# Acak semua yang tersisa
 -repackageclasses 'o'
 -allowaccessmodification
--keepattributes SourceFile,LineNumberTable
-
-# --- WebView & JS ---
--keepclassmembers class * extends android.webkit.WebViewClient {
-    public boolean *(...);
-}
--keepclassmembers class * extends android.webkit.WebView {
-    *** javascriptInterface;
-}
--keepclassmembers class com.exam.exammodwithx.WebviewActivity$JSBridge {
-    public <methods>;
-}
-
-# --- Native ---
--keep class com.exam.exammodwithx.SecureNative {
-    native <methods>;
-}
-
-# --- Model ---
--keep class com.exam.exammodwithx.** { *; }
-
-# --- Toasty ---
--keep class es.dmoral.toasty.** { *; }
-
-# --- Google ---
--dontwarn com.google.**
--keep class com.google.** { *; }
+-optimizations !code/simplification/arithmetic,!field/*,!class/merging/*,!code/allocation/variable
