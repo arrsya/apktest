@@ -40,3 +40,11 @@ jobs:
         with:
           name: app-release-no-env
           path: app/build/outputs/apk/release/*.apk
+
+      - name: Upload ProGuard mapping (private)
+  uses: actions/upload-artifact@v4
+  with:
+    name: mapping-${{ github.run_number }}
+    path: app/build/outputs/mapping/release/mapping.txt
+    retention-days: 30
+
