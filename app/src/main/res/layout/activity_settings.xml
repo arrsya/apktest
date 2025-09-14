@@ -90,11 +90,11 @@
                 android:text="Reset Default" />
 
             <Button
-                android:id="@+id/btn_clear_cache"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Hapus Cache & Cookies"
-                android:layout_marginTop="8dp"/>
+    android:id="@+id/btn_clear_cache"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:text="Hapus Cache &amp; Cookies"
+    android:layout_marginTop="8dp"/>
 
         </LinearLayout>
 
