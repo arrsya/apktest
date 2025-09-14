@@ -38,9 +38,14 @@ android {
             "proguard-rules.pro"
         )
         signingConfig = signingConfigs.getByName("release")
-        buildConfigField("boolean", "DEBUG", "false")
+            configure<com.android.build.gradle.internal.dsl.BuildType> {
+            buildConfigField("String", "BUILD_TIME", "\"${System.currentTimeMillis()}\"")
+            resValue("string", "build_time", "${System.currentTimeMillis()}")
+        }
     }
 }
+
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
