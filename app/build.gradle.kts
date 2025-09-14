@@ -17,16 +17,17 @@ android {
     }
 
     signingConfigs {
-        create("release") {
-            keyAlias = System.getenv("KEY_ALIAS") ?: "abc"
-            keyPassword = System.getenv("KEY_PASSWORD") ?: "abcdef"
-            storeFile = file("abc.keystore")
-            storePassword = System.getenv("STORE_PASSWORD") ?: "abcdef"
-            enableV1Signing = true
-            enableV2Signing = true
-            enableV3Signing = true
-        }
+    create("release") {
+        keyAlias = "abc"
+        keyPassword = "abcdef"
+        storeFile = file("abc.keystore")
+        storePassword = "abcdef"
+        enableV1Signing = true
+        enableV2Signing = true
+        enableV3Signing = true
     }
+}
+
 
     buildTypes {
         release {
