@@ -1,67 +1,61 @@
-
 plugins {
     id("com.android.application")
-    
 }
 
 android {
     namespace = "com.exam.exammodwithx"
-    compileSdk = 33
-    //buildToolsVersion = "33.0.2"
-    
+    compileSdk = 34
     defaultConfig {
         applicationId = "com.exam.exammodwithx"
         minSdk = 21
-        targetSdk = 32
-        versionCode = 4
-        versionName = "1.3"
-        
-        vectorDrawables { 
-            useSupportLibrary = true
-        }
+        targetSdk = 34
+        versionCode = 5
+        versionName = "1.4"
+        vectorDrawables.useSupportLibrary = true
+        // enable native lib
+        ndk.abiFilters += listOf("arm64-v8a", "armeabi-v7a")
     }
-    
+
     signingConfigs {
         create("release") {
-            keyAlias = "abc"
-            keyPassword = "abcdef"
+            keyAlias = System.getenv("KEY_ALIAS") ?: "abc"
+            keyPassword = System.getenv("KEY_PASSWORD") ?: "abcdef"
             storeFile = file("abc.keystore")
-            storePassword = "abcdef"
+            storePassword = System.getenv("STORE_PASSWORD") ?: "abcdef"
             enableV1Signing = true
             enableV2Signing = true
             enableV3Signing = true
         }
-    }
-    
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
     }
 
     buildTypes {
         release {
             isMinifyEnabled = true
             isShrinkResources = true
-            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
-            //proguardFiles("proguard-rules.pro")
-            getByName("release") {
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
+            )
             signingConfig = signingConfigs.getByName("release")
-            }
         }
     }
-
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
+    }
     buildFeatures {
         viewBinding = true
-        
     }
-    
 }
 
 dependencies {
-
-
-    implementation("com.google.android.material:material:1.6.1")
-    implementation("androidx.appcompat:appcompat:1.5.0")
+    implementation("com.google.android.material:material:1.11.0")
+    implementation("androidx.appcompat:appcompat:1.6.1")
     implementation("com.github.GrenderG:Toasty:1.5.2")
-    //implementation("androidx.constraintlayout:constraintlayout:2.1.4")
+    // biometric
+    implementation("androidx.biometric:biometric:1.1.0")
+    // root detection
+    implementation("com.scottyab:rootbeer-lib:0.1.0")
+    // security
+    implementation("androidx.security:security-crypto:1.1.0-alpha06")
 }
