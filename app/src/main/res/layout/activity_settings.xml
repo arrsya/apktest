@@ -88,6 +88,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Reset Default" />
+
+            <Button
+                android:id="@+id/btn_clear_cache"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Hapus Cache & Cookies"
+                android:layout_marginTop="8dp"/>
+
         </LinearLayout>
 
          <Button
