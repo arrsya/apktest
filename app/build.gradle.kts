@@ -38,12 +38,11 @@ android {
             "proguard-rules.pro"
         )
         signingConfig = signingConfigs.getByName("release")
-            configure<com.android.build.gradle.internal.dsl.BuildType> {
-            buildConfigField("String", "BUILD_TIME", "\"${System.currentTimeMillis()}\"")
-            resValue("string", "build_time", "${System.currentTimeMillis()}")
-        }
+        buildConfigField("String", "BUILD_TIME", "\"${System.currentTimeMillis()}\"")
+        resValue("string", "build_time", "${System.currentTimeMillis()}")
     }
 }
+
 
 
     compileOptions {
