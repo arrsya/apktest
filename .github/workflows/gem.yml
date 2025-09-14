@@ -1,48 +1,42 @@
-name: gemini
+name: Build Release APK (No-Secrets)
 
 on:
-  workflow_dispatch:  # Hanya bisa dijalankan manual via GitHub UI
+  workflow_dispatch:   # manual trigger saja
 
 jobs:
   build:
     runs-on: ubuntu-latest
+
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
+      # 1. Checkout source
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-    - name: Set up JDK 17
-      uses: actions/setup-java@v4
-      with:
-        distribution: 'temurin'
-        java-version: '17'
+      # 2. JDK 17
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
 
-    # --- LANGKAH PENTING UNTUK KEAMANAN ---
-    # 1. Decode Keystore dari GitHub Secrets
-    # Keystore tidak boleh disimpan di dalam repository. Simpan sebagai Base64 di Secrets.
-    # Jalankan perintah ini di terminal lokal Anda: `base64 -w 0 abc.keystore`
-    # Lalu copy hasilnya dan simpan di GitHub Secrets dengan nama `RELEASE_KEYSTORE_BASE64`
-    - name: Decode Keystore
-      # Pastikan path file sama dengan yang ada di build.gradle.kts (`file("abc.keystore")`)
-      run: echo "${{ secrets.RELEASE_KEYSTORE_BASE64 }}" | base64 --decode > app/abc.keystore
+      # 3. Grant gradlew executable
+      - name: Grant gradlew permission
+        run: chmod +x ./gradlew
 
-    - name: Grant gradlew permission
-      run: chmod +x ./gradlew
+      # 4. (Opsional) Install NDK kalau pakai native lib
+      - name: Install NDK
+        uses: nttld/setup-ndk@v1
+        with:
+          ndk-version: r26b
 
-    # --- LANGKAH UTAMA YANG DIPERBAIKI ---
-    # 2. Build Release APK, bukan Debug
-    # Kita menggunakan './gradlew assembleRelease'
-    # Kita juga mengirimkan password dan alias sebagai properti (-P) yang diambil dari GitHub Secrets.
-    - name: Build Release APK
-      run: ./gradlew assembleRelease -PstoreFile=abc.keystore -PkeyAlias="${{ secrets.RELEASE_KEY_ALIAS }}" -PkeyPassword="${{ secrets.RELEASE_KEY_PASSWORD }}" -PstorePassword="${{ secrets.RELEASE_STORE_PASSWORD }}"
+      # 5. Build release APK
+        # Semua signing config sudah ada di build.gradle.kts (hardcoded)
+      - name: Build Release APK
+        run: ./gradlew assembleRelease
 
-    - name: Find APK file (Debugging)
-      # Path untuk APK release berbeda
-      run: ls -la app/build/outputs/apk/release/
-
-    # 3. Upload APK Release
-    - name: Upload Release APK
-      uses: actions/upload-artifact@v4
-      with:
-        name: app-release # Ganti nama artefak menjadi app-release
-        path: app/build/outputs/apk/release/*.apk # Path untuk APK release
-
+      # 6. Upload artefak
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: app-release-no-env
+          path: app/build/outputs/apk/release/*.apk
